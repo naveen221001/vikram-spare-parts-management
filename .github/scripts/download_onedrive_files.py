@@ -195,12 +195,6 @@ def main():
     os.makedirs("data", exist_ok=True)
     
     # Get OneDrive share URLs from environment variables
-    solar_lab_tests_url = os.environ.get("SOLAR_LAB_TESTS_URL")
-    line_trials_url = os.environ.get("LINE_TRIALS_URL")
-    certifications_url = os.environ.get("CERTIFICATIONS_URL")
-    chamber_tests_url = os.environ.get("CHAMBER_TESTS_URL")
-    rnd_todos_url = os.environ.get("RND_TODOS_URL")
-    daily_updates_url = os.environ.get("DAILY_UPDATES_URL")
     spare_parts_inventory_url = os.environ.get("SPARE_PARTS_INVENTORY_URL")
     
     print("\n=== Starting OneDrive file download process ===")
@@ -209,59 +203,6 @@ def main():
     
     success = True
     
-    # Download Solar Lab Tests Excel file
-    if solar_lab_tests_url:
-        print("\n=== Processing Solar Lab Tests file ===")
-        result = download_file(solar_lab_tests_url, "data/Solar_Lab_Tests.xlsx")
-        success = result and success
-    else:
-        print("WARNING: SOLAR_LAB_TESTS_URL environment variable not set")
-        success = False
-    
-    # Download Line Trials Excel file
-    if line_trials_url:
-        print("\n=== Processing Line Trials file ===")
-        result = download_file(line_trials_url, "data/Line_Trials.xlsx")
-        success = result and success
-    else:
-        print("WARNING: LINE_TRIALS_URL environment variable not set")
-        success = False
-    
-    # Download Certifications Excel file
-    if certifications_url:
-        print("\n=== Processing Certifications file ===")
-        result = download_file(certifications_url, "data/Certifications.xlsx")
-        success = result and success
-    else:
-        print("WARNING: CERTIFICATIONS_URL environment variable not set")
-        success = False
-
-    # Download Chamber Tests Excel file
-    if chamber_tests_url:
-        print("\n=== Processing Chamber Tests file ===")
-        result = download_file(chamber_tests_url, "data/Chamber_Tests.xlsx")
-        success = result and success
-    else:
-        print("WARNING: CHAMBER_TESTS_URL environment variable not set")
-        success = False
-
-    # Download R&D Todos Excel file
-    if rnd_todos_url:
-        print("\n=== Processing R&D Todos file ===")
-        result = download_file(rnd_todos_url, "data/RND_Todos.xlsx")
-        success = result and success
-    else:
-        print("WARNING: RND_TODOS_URL environment variable not set")
-        success = False
-
-    # Download Daily Updates Excel file
-    if daily_updates_url:
-        print("\n=== Processing Daily Updates file ===")
-        result = download_file(daily_updates_url, "data/Daily_Updates.xlsx")
-        success = result and success
-    else:
-        print("WARNING: DAILY_UPDATES_URL environment variable not set")
-        success = False
 
     # NEW: Download Spare Parts Inventory Excel file
     if spare_parts_inventory_url:
