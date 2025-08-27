@@ -52,13 +52,20 @@ jobs:
             fi
           done
           
-      - name: Trigger Render deployment if spare parts updated
+      - name: Upload Excel file to backend via API
         if: hashFiles('data/Spare_Parts_Inventory.xlsx') != ''
         run: |
-          echo "Spare parts inventory updated, triggering backend refresh"
-          curl -X POST "${{ secrets.RENDER_WEBHOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            -d '{"action": "refresh_data", "timestamp": "'$(date -Iseconds)'"}'
+          echo "Uploading Excel file to backend..."
+          if [ -f "data/Spare_Parts_Inventory.xlsx" ]; then
+            curl -X POST \
+              -F "excel=@data/Spare_Parts_Inventory.xlsx" \
+              "https://vikram-spare-parts-management.onrender.com/api/sync-excel" \
+              --max-time 60 \
+              --retry 3 \
+              -v
+          else
+            echo "Excel file not found for upload"
+          fi
           
       - name: Force file differences check
         id: git-check
