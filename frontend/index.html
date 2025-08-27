@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Vikram Solar R&D Lab Spare Parts Management System" />
+    <meta name="keywords" content="spare parts, inventory, management, vikram solar, solar panels" />
+    <meta name="author" content="Vikram Solar R&D Team" />
+    <meta name="theme-color" content="#d32f2f" />
+    
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    
+    <title>Vikram Solar - Spare Parts Management</title>
+    
+    <style>
+      /* Loading screen styles */
+      #initial-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fafafa;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-family: 'Roboto', sans-serif;
+      }
+      
+      .loader-logo {
+        width: 80px;
+        height: 80px;
+        background: #d32f2f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        animation: pulse 2s infinite;
+      }
+      
+      .loader-text {
+        color: #d32f2f;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      
+      .loader-subtext {
+        color: #757575;
+        font-size: 0.9rem;
+      }
+      
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #d32f2f;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-top: 20px;
+      }
+      
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Hide loader when app loads */
+      .app-loaded #initial-loader {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Initial Loading Screen -->
+    <div id="initial-loader">
+      <div class="loader-logo">VS</div>
+      <div class="loader-text">Vikram Solar</div>
+      <div class="loader-subtext">Loading Spare Parts Management System...</div>
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- React App Root -->
+    <div id="root"></div>
+    
+    <!-- Environment Variables Script -->
+    <script>
+      // Make environment variables available to the app
+      window.ENV = {
+        API_URL: '%VITE_API_URL%',
+        APP_VERSION: '%VITE_APP_VERSION%',
+        ENVIRONMENT: '%VITE_ENVIRONMENT%'
+      };
+    </script>
+    
+    <!-- Remove loader once React app mounts -->
+    <script>
+      // Remove initial loader after a delay to ensure React has mounted
+      setTimeout(() => {
+        document.body.classList.add('app-loaded');
+      }, 2000);
+      
+      // Also remove on window load as backup
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.body.classList.add('app-loaded');
+        }, 1000);
+      });
+    </script>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

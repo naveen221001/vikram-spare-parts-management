@@ -1,0 +1,92 @@
+name: Sync Excel Files from OneDrive
+
+on:
+  schedule:
+    - cron: '30 9,10,12,14,16 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  sync-excel-files:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas openpyxl
+          
+      - name: Debug environment
+        run: |
+          echo "GitHub workspace: $GITHUB_WORKSPACE"
+          ls -la
+          mkdir -p data
+          
+      - name: Fetch Excel files from OneDrive
+        run: python .github/scripts/download_onedrive_files.py
+        env:
+          SOLAR_LAB_TESTS_URL: ${{ secrets.SOLAR_LAB_TESTS_URL }}
+          LINE_TRIALS_URL: ${{ secrets.LINE_TRIALS_URL }}
+          CERTIFICATIONS_URL: ${{ secrets.CERTIFICATIONS_URL }}
+          CHAMBER_TESTS_URL: ${{ secrets.CHAMBER_TESTS_URL }} 
+          RND_TODOS_URL: ${{ secrets.RND_TODOS_URL }}
+          DAILY_UPDATES_URL: ${{ secrets.DAILY_UPDATES_URL }}
+          SPARE_PARTS_INVENTORY_URL: ${{ secrets.SPARE_PARTS_INVENTORY_URL }}
+          
+      - name: Check downloaded files
+        run: |
+          ls -la data/
+          echo "File sizes:"
+          for file in data/*.xlsx; do
+            if [ -f "$file" ]; then
+              echo "  $(basename "$file"): $(stat -c%s "$file") bytes"
+            fi
+          done
+          
+      - name: Trigger Render deployment if spare parts updated
+        if: hashFiles('data/Spare_Parts_Inventory.xlsx') != ''
+        run: |
+          echo "Spare parts inventory updated, triggering backend refresh"
+          curl -X POST "${{ secrets.RENDER_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d '{"action": "refresh_data", "timestamp": "'$(date -Iseconds)'"}'
+          
+      - name: Force file differences check
+        id: git-check
+        run: |
+          touch data/.files_changed_$(date +%s)
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "Files have been updated - forcing commit at $(date)"
+          
+      - name: Commit and push if there are changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          git commit -m "📊 Update Excel files from OneDrive - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+          
+      - name: Summary
+        run: |
+          echo "📊 Sync Summary:"
+          echo "==============="
+          echo "Timestamp: $(date)"
+          echo "Files processed:"
+          for file in data/*.xlsx; do
+            if [ -f "$file" ]; then
+              echo "  ✅ $(basename "$file")"
+            fi
+          done
+          echo ""
+          echo "🔄 Next sync scheduled for every 2 hours during weekdays (9AM-5PM)"
+          echo "🚀 Dashboard will auto-refresh with latest data"

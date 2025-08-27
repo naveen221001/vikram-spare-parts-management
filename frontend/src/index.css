@@ -1,0 +1,328 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Loading states */
+.loading-skeleton {
+  animation: loading-shimmer 1.5s infinite;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+  .responsive-table {
+    font-size: 0.8rem;
+  }
+  
+  .responsive-table th,
+  .responsive-table td {
+    padding: 8px 4px;
+  }
+}
+
+/* Custom Material-UI overrides */
+.MuiDataGrid-root {
+  border: none !important;
+}
+
+.MuiDataGrid-columnHeaders {
+  background-color: #f5f5f5 !important;
+  border-bottom: 2px solid #e0e0e0 !important;
+}
+
+.MuiDataGrid-row:hover {
+  background-color: rgba(211, 47, 47, 0.02) !important;
+}
+
+.MuiDataGrid-cell:focus,
+.MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+/* Chart responsiveness */
+.recharts-responsive-container {
+  min-height: 300px;
+}
+
+@media (max-width: 600px) {
+  .recharts-responsive-container {
+    min-height: 250px;
+  }
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Status indicators */
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-indicator.connected {
+  background-color: #4caf50;
+}
+
+.status-indicator.disconnected {
+  background-color: #f44336;
+}
+
+.status-indicator.warning {
+  background-color: #ff9800;
+}
+
+.status-indicator.unknown {
+  background-color: #9e9e9e;
+}
+
+/* Stock level colors */
+.stock-level-out {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.stock-level-low {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.stock-level-medium {
+  background-color: #2196f3 !important;
+  color: white !important;
+}
+
+.stock-level-high {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+/* Equipment category colors */
+.equipment-hail {
+  background-color: rgba(63, 81, 181, 0.1);
+  border-left: 4px solid #3f51b5;
+}
+
+.equipment-mlt {
+  background-color: rgba(255, 152, 0, 0.1);
+  border-left: 4px solid #ff9800;
+}
+
+.equipment-thermal {
+  background-color: rgba(244, 67, 54, 0.1);
+  border-left: 4px solid #f44336;
+}
+
+.equipment-damp {
+  background-color: rgba(33, 150, 243, 0.1);
+  border-left: 4px solid #2196f3;
+}
+
+.equipment-pct {
+  background-color: rgba(156, 39, 176, 0.1);
+  border-left: 4px solid #9c27b0;
+}
+
+.equipment-common {
+  background-color: rgba(96, 125, 139, 0.1);
+  border-left: 4px solid #607d8b;
+}
+
+/* Custom button styles */
+.vikram-button-primary {
+  background-color: #d32f2f !important;
+  color: white !important;
+}
+
+.vikram-button-primary:hover {
+  background-color: #b71c1c !important;
+}
+
+.vikram-button-secondary {
+  background-color: #616161 !important;
+  color: white !important;
+}
+
+.vikram-button-secondary:hover {
+  background-color: #424242 !important;
+}
+
+/* Loading states for cards */
+.card-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-loading::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+  content: '';
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Tooltip customizations */
+.custom-tooltip {
+  background-color: rgba(33, 33, 33, 0.9) !important;
+  color: white !important;
+  font-size: 0.75rem !important;
+  border-radius: 4px !important;
+}
+
+/* DataGrid customizations */
+.data-grid-container .MuiDataGrid-root {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.data-grid-container .MuiDataGrid-columnHeader {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #212121;
+}
+
+.data-grid-container .MuiDataGrid-row.critical {
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.data-grid-container .MuiDataGrid-row.warning {
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-text-center {
+    text-align: center !important;
+  }
+  
+  .mobile-padding {
+    padding: 16px !important;
+  }
+}
+
+/* Print optimizations */
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+  
+  .print-break {
+    page-break-before: always !important;
+  }
+  
+  .print-no-break {
+    page-break-inside: avoid !important;
+  }
+  
+  body {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid !important;
+  }
+}
