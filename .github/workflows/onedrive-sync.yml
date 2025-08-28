@@ -38,21 +38,21 @@ jobs:
           
       - name: Check downloaded files
         run: |
-          ls -la data/
+          ls -la backend/data/
           echo "File sizes:"
-          for file in data/*.xlsx; do
+          for file in backend/data/*.xlsx; do
             if [ -f "$file" ]; then
               echo "  $(basename "$file"): $(stat -c%s "$file") bytes"
             fi
           done
           
       - name: Upload Excel file to backend via API
-        if: hashFiles('data/Spare_Parts_Inventory.xlsx') != ''
+        if: hashFiles('backend/data/Spare_Parts_Inventory.xlsx') != ''
         run: |
           echo "Uploading Excel file to backend..."
-          if [ -f "data/Spare_Parts_Inventory.xlsx" ]; then
+          if [ -f "backend/data/Spare_Parts_Inventory.xlsx" ]; then
             curl -X POST \
-              -F "excel=@data/Spare_Parts_Inventory.xlsx" \
+              -F "excel=@backend/data/Spare_Parts_Inventory.xlsx" \
               "https://vikram-spare-parts-management.onrender.com/api/sync-excel" \
               --max-time 60 \
               --retry 3 \
@@ -64,7 +64,7 @@ jobs:
       - name: Force file differences check
         id: git-check
         run: |
-          touch data/.files_changed_$(date +%s)
+          touch backend/data/.files_changed_$(date +%s)
           echo "changes=true" >> $GITHUB_OUTPUT
           echo "Files have been updated - forcing commit at $(date)"
           
@@ -73,7 +73,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/
+          git add backend/data/
           git commit -m "📊 Update Excel files from OneDrive - $(date '+%Y-%m-%d %H:%M:%S')"
           git push
           
@@ -83,7 +83,7 @@ jobs:
           echo "==============="
           echo "Timestamp: $(date)"
           echo "Files processed:"
-          for file in data/*.xlsx; do
+          for file in backend/data/*.xlsx; do
             if [ -f "$file" ]; then
               echo "  ✅ $(basename "$file")"
             fi
