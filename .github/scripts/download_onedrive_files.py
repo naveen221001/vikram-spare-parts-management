@@ -185,14 +185,17 @@ def download_file(url, output_path):
 
 def force_changes():
     """Create a marker file to force Git to recognize changes"""
-    marker_path = "data/.files_changed"
+    marker_path = os.path.join("backend", "data", ".files_changed")
+    os.makedirs(os.path.dirname(marker_path), exist_ok=True)
     with open(marker_path, "w") as f:
         f.write(f"Files updated at {time.time()}")
     print(f"Created marker file at {marker_path}")
 
 def main():
+    data_dir = os.path.join("backend", "data")
+    
     # Create data directory if it doesn't exist
-    os.makedirs("data", exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
     
     # Get OneDrive share URLs from environment variables
     spare_parts_inventory_url = os.environ.get("SPARE_PARTS_INVENTORY_URL")
@@ -207,7 +210,7 @@ def main():
     # NEW: Download Spare Parts Inventory Excel file
     if spare_parts_inventory_url:
         print("\n=== Processing Spare Parts Inventory file ===")
-        result = download_file(spare_parts_inventory_url, "data/Spare_Parts_Inventory.xlsx")
+        result = download_file(spare_parts_inventory_url, os.path.join(data_dir,"Spare_Parts_Inventory.xlsx"))
         success = result and success
     else:
         print("WARNING: SPARE_PARTS_INVENTORY_URL environment variable not set")
